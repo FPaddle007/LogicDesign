@@ -1,0 +1,47 @@
+//engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/BumperLogic.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/BumperLogic.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module BumperLogic
+
+Top level modules:
+	BumperLogic
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Priority.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Priority.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Priority
+-- Compiling module WheelDisplay
+
+Top level modules:
+	Priority
+	WheelDisplay
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Renee.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Renee.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Renee
+
+Top level modules:
+	Renee
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Comparators.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Comparators.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module greaterThan
+-- Compiling module equalTo
+
+Top level modules:
+	greaterThan
+	equalTo
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Testbench.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/Testbench.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Testbench
+
+Top level modules:
+	Testbench
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/SensorLogic.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Renee/SensorLogic.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module SensorLogic
+
+Top level modules:
+	SensorLogic
+
+} {} {}}

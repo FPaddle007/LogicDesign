@@ -1,0 +1,2 @@
+module priority(fb,lb,rb,bb,ls,rs,lw,rw);
+endmodule
