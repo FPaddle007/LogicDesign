@@ -1,0 +1,111 @@
+// W-bit Ripple Carry Adder with Overflow Detection
+// Note that Quartus does not allow "genvar". Comment out the
+// "extra" FullAdder instantiations to match the specified width W.
+module RCA_Adder
+	#(parameter W = 8)		// Up to 8-bit adder
+	(A, B, cin, S, overflow);
+	input [W-1:0] A, B;		// W-bit unsigned inputs
+	input cin;					// Carry-in
+	output [W-1:0] S;			// W-bit unsigned output
+	output overflow;			// Overflow; carry-out from MSB
+	
+	wire [W:0] c;			// Carry signals
+	assign c[0] = cin;
+
+//	
+	FullAdder F0(A[0], B[0], c[0], S[0], c[1]);
+//
+	FullAdder F1(A[1], B[1], c[1], S[1], c[2]);
+//
+	FullAdder F2(A[2], B[2], c[2], S[2], c[3]);
+//
+	FullAdder F3(A[3], B[3], c[3], S[3], c[4]);
+//
+	FullAdder F4(A[4], B[4], c[4], S[4], c[5]);
+/*	
+	FullAdder F5(A[5], B[5], c[5], S[5], c[6]);
+//	
+	FullAdder F6(A[6], B[6], c[6], S[6], c[7]);
+//
+	FullAdder F7(A[7], B[7], c[7], S[6], c[8]);
+*/	
+	assign overflow = c[W];
+endmodule
+
+
+// W-bit unsigned number to 3-Digit 7-Segment Display
+module Unsigned_to_7SEG
+	#(parameter W = 8)
+	(N, D2, D1, D0);
+	input  [W-1:0] N;			// W-bit unsigned number, W<= 8
+	output [6:0] D2, D1, D0;	// 3-digit 7-segment displays
+
+// Named HEX Outputs
+	localparam ZERO 	= 7'b1000000;	// 64
+	localparam ONE		= 7'b1111001; 	// 121
+	localparam TWO		= 7'b0100100; 	// 36
+	localparam THREE	= 7'b0110000; 	// 48
+	localparam FOUR	= 7'b0011001; 	// 25
+	localparam FIVE	= 7'b0010010; 	// 18
+	localparam SIX		= 7'b0000010; 	// 2
+	localparam SEVEN	= 7'b1111000; 	// 120
+	localparam EIGHT	= 7'b0000000; 	// 0
+	localparam NINE	= 7'b0010000; 	// 16
+	localparam OFF		= 7'b1111111; 	// 127
+
+// Decimal digit look-up table
+	reg [6:0] LUT[0:10];
+	initial begin
+		LUT[0] = ZERO;
+		LUT[1] = ONE;
+		LUT[2] = TWO;
+		LUT[3] = THREE;
+		LUT[4] = FOUR;
+		LUT[5] = FIVE;
+		LUT[6] = SIX;
+		LUT[7] = SEVEN;
+		LUT[8] = EIGHT;
+		LUT[9] = NINE;
+		LUT[10] = OFF;
+	end
+
+// Get decimal digits of N
+	wire [W-1:0] Quotient0, Quotient1, Digit0, Digit1, Digit2;
+	assign Quotient0 = N / 'd10;
+	assign Quotient1 = Quotient0 / 'd10;
+	assign Digit0 = N % 'd10;
+	assign Digit1 = Quotient0 % 'd10;
+	assign Digit2 = Quotient1 % 'd10;
+
+	
+// Display decimal digits of N
+	assign D2 = (Digit2 == 'd0) ? OFF : LUT[Digit2];
+	assign D1 = ((Digit2 == 'd0) & (Digit1 == 'd0)) ? OFF : LUT[Digit1];
+	assign D0 = LUT[Digit0];
+endmodule
+
+// The W-bit adder, W <= 8
+module Adder
+	#(parameter WIDTH = 5)
+	(SW, LEDR, HEX2, HEX1, HEX0, LEDG);
+	input [15:0] SW;						// A = SW[15:8], B = SW[7:0]
+	output [15:0] LEDR;					// A = LEDR[15:8], B = LEDR[7:0]
+	output [6:0] HEX2, HEX1, HEX0;			// Sum in decimal
+	output [8:8] LEDG;					// Overflow
+
+	wire [WIDTH-1:0] A, B, S;				//
+	wire ovf;
+	
+	assign A = SW[7:0];
+	assign B = SW[15:8];
+	
+// Instantiate W-bit RCA
+	RCA_Adder #(.W(WIDTH)) add(A, B, 1'b0, S, LEDG[8]);
+		
+// Assign outputs
+		assign LEDR[15:8] = SW[15:8];
+		assign LEDR[7:0] = SW[7:0];
+		Unsigned_to_7SEG #(.W(WIDTH)) displayS(S, HEX2, HEX1, HEX0);
+endmodule
+
+

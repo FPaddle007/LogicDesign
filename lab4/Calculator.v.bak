@@ -1,0 +1,6 @@
+module Prefix(Ain,Bin,OP,Co,Aout,Bout);
+	input [3:0] Ain,Bin;
+	input [2:0] OP;
+	output [3:0] Aout,Bout,Co;
+	
+endmodule

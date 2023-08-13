@@ -1,0 +1,35 @@
+//engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/Calculator.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/Calculator.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Calculator
+
+Top level modules:
+	Calculator
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/FullAdder.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/FullAdder.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module FullAdder
+
+Top level modules:
+	FullAdder
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/Testbench.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/Testbench.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Testbench
+
+Top level modules:
+	Testbench
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/Adder.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab4/Adder.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module AddSub4
+-- Compiling module NumDisplay
+-- Compiling module DisplayOvf
+-- Compiling module Prefix
+
+Top level modules:
+	AddSub4
+	NumDisplay
+	DisplayOvf
+	Prefix
+
+} {} {}}
