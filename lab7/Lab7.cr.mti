@@ -1,0 +1,15 @@
+//engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab7/CashRegOG.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab7/CashRegOG.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module CashRegOG
+
+Top level modules:
+	CashRegOG
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab7/testbench.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab7/CashRegOG.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module CashRegOG
+
+Top level modules:
+	CashRegOG
+
+} {} {}}

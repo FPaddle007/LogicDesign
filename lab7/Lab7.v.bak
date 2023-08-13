@@ -1,0 +1,3 @@
+module Lab7(SW,KEY,HEX0,HEX1,HEX3,HEX4,HEX5,HEX6,HEX7)
+	input [3:0] SW
+endmodule
