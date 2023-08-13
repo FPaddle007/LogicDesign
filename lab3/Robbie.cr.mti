@@ -1,0 +1,26 @@
+//engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Robbie.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Robbie.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module Robbie
+
+Top level modules:
+	Robbie
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/TestBench.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/TestBench.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module TestBench
+
+Top level modules:
+	TestBench
+
+} {} {}} //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Robbie_Controller.v {1 {vlog -work work -stats=none //engin-labs.m.storage.umich.edu/aidanp/windat.v2/Desktop/EECS270_Lab3/Robbie_Controller.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module mux
+-- Compiling module my7bit21mux
+-- Compiling module Robbie_Display
+-- Compiling module Robbie_Controller
+
+Top level modules:
+	Robbie_Display
+	Robbie_Controller
+
+} {} {}}
