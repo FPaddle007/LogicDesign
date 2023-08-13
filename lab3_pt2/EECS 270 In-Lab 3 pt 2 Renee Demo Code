@@ -1,0 +1,83 @@
+module BumperLogic(fb,lb,rb,bb,lw,rw); // Bumper Logic
+	input fb,lb,rb,bb;
+	output [2:0] lw,rw;
+	assign lw[2] = (fb&~lb&~rb&~bb) | (~fb&lb&~rb&~bb) | (fb&lb&~rb&~bb);
+	assign lw[1] = (~fb&~lb&~rb&bb) | (~fb&lb&~rb&bb);
+	assign lw[0] = (~fb&~lb&rb&~bb) | (fb&~lb&rb&~bb) | (~fb&~lb&rb&bb) | (fb&~lb&~rb&bb) | (~fb&lb&rb&~bb);
+	
+	assign rw[2] = (fb&~lb&~rb&~bb) | (~fb&~lb&rb&~bb) | (fb&~lb&rb&~bb);
+	assign rw[1] = (~fb&~lb&~rb&bb) | (~fb&~lb&rb&bb);
+	assign rw[0] = (~fb&lb&~rb&~bb) | (fb&lb&~rb&~bb) | (~fb&lb&~rb&bb) | (fb&~lb&~rb&bb) | (~fb&lb&rb&~bb);
+endmodule
+
+module greaterThan(a,b,out); // Comparators
+	input [2:0] a,b;
+	output out;
+	
+	assign out = a[2]&~b[2] | 
+					(a[2]~^b[2]) & (a[1]&~b[1]) | 
+					(a[2]~^b[2]) & (a[1]~^b[1]) & (a[0]&~b[0]);
+endmodule
+
+
+module equalTo(a,b,out);
+	input [2:0] a,b;
+	output out;
+	
+	assign out = (a[2]~^b[2]) & (a[1]~^b[1]) & (a[0]~^b[0]);
+endmodule
+
+module Priority(fb,lb,rb,bb,ls,rs,lw,rw); // Priority
+	input fb,lb,rb,bb;
+	input [2:0] ls,rs;
+	output [2:0] lw,rw;
+	wire [2:0] lwa, lwb, rwa, rwb;
+	
+	BumperLogic BL(fb,lb,rb,bb,lwa,rwa);
+	SensorLogic SL(ls,rs,lwb,rwb);
+	
+	assign lw = fb|lb|rb|bb ? lwa : lwb;
+	assign rw = fb|lb|rb|bb ? rwa : rwb;
+endmodule
+
+
+module WheelDisplay(wheel, SEG);
+	input [2:0] wheel;
+	output [6:0] SEG;
+		parameter [6:0] S = 7'b0010010;
+		parameter [6:0] F = 7'b0001110;
+		parameter [6:0] R = 7'b0101111;
+	assign SEG[6:0] = wheel[2] ? R : (wheel[1] ? F : S);
+endmodule
+
+module SensorLogic(ls,rs,lw,rw); // Sensor Logic
+	input [2:0] ls, rs;
+	output [2:0] lw, rw;
+	wire leftfwd,rightfwd,eqZL,eqZR,eq,eqNZ,gT;
+	
+	equalTo eq1(ls,rs,eq);
+	greaterThan g(ls,rs,gT);
+	equalTo eq2(ls,3'b000,eqZL);
+	equalTo eq3(rs,3'b000,eqZR);
+	assign eqNZ = eq&~eqZL&~eqZR;
+	assign leftfwd = eq&eqNZ | (~gT&~eq);
+	assign rightfwd = eq&eqNZ | gT;
+	
+	assign lw[2] = 0;
+	assign lw[1] = leftfwd;
+	assign lw[0] = ~leftfwd;
+	assign rw[2] = 0;
+	assign rw[1] = rightfwd;
+	assign rw[0] = ~rightfwd;
+endmodule
+
+module Renee(SW, KEY, HEX0, HEX1); // Renee
+	input [6:0] SW;
+	input [3:0] KEY;
+	output [6:0] HEX0, HEX1;
+	wire [2:0] lw, rw;
+	
+	Priority P(.ls(SW[6:4]), .rs(SW[2:0]), .lb(~KEY[3]), .rb(~KEY[2]), .fb(~KEY[1]), .bb(~KEY[0]), .lw(lw), .rw(rw));
+	WheelDisplay WD1(lw,HEX1);
+	WheelDisplay WD2(rw,HEX0);
+endmodule
