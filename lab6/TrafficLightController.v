@@ -36,90 +36,110 @@ parameter min=0;
 reg [1:0] count;
 reg[1:0] counter_reset;
 
-////////////////// Next State ////////////////////
-always@* begin
-case(s) 
-	s0:if(E&W&NL&EL&count==min) ns <= s3;
-		else if(EL&count==min) ns<=s7;
-		else if(NL&count==min) ns<=s5;
-		else if(~E&~W&~NL&~EL&count==min) ns<= s3;
-		else ns<=s0;
-	s1:if(E&W&NL&EL&count==min) ns<=s5;
-		else if(W&count==min) ns<=s4;
-		else if(EL&count==min) ns<=s5;
-		else if(~E&~W&~NL&~EL&count==min) ns<= s5;
-		else ns<=s1;
-	s2:if(E&W&NL&EL&count==min) ns<=s6;
-		else if((E|W|NL)&count==min) ns<=s6;
-		else if(~E&~W&~NL&~EL&count==min) ns<= s6;
-		else ns<=s2;
-	s3:begin ns<=s1; end
-	s4:begin ns<=s0; end
-	s5:begin ns<=s2; end
-	s6:if(E&W&NL&EL) ns<=s0;
-		else if(~W&NL&~EL) ns<=s1;
-		else if(~W&NL&EL) ns<=s1;
-		else if(~E&~W&~NL&~EL) ns<= s0 ;
-		else ns<=s0;
-	s7:begin ns<=s2; end
-endcase
+// State transitions
+always @* begin
+    case (s)
+        s0: if (E & W & NL & EL & count == min) ns <= s3;
+            else if (EL & count == min) ns <= s7;
+            else if (NL & count == min) ns <= s3;
+            else if (~E & ~W & ~NL & ~EL & count == min) ns <= s3;
+            else ns <= s0;
+        s1: if (E & W & NL & EL & count == min) ns <= s5;
+            else if (W & count == min) ns <= s4;
+            else if (EL & count == min) ns <= s5;
+            else if (~E & ~W & ~NL & ~EL & count == min) ns <= s5;
+            else ns <= s1;
+        s2: if (E & W & NL & EL & count == min) ns <= s6;
+            else if ((E | W | NL) & count == min) ns <= s6;
+            else if (~E & ~W & ~NL & ~EL & count == min) ns <= s6;
+            else ns <= s2;
+        s3: if (count == min) ns <= s1;
+            else ns <= s3;
+        s4: if (count == min) ns <= s0;
+            else ns <= s4;
+        s5: if (count == min) ns <= s2;
+            else ns <= s5;
+        s6: begin
+            if (E | W | NL | EL) ns <= s0; // Conflicting traffic detected, transition to grrg
+            else if (count == min) ns <= s0; // No conflicting traffic, transition to grgg
+            else ns <= s6; // Stay in s6 until the timer expires
+        end
+        s7: if (count == min) ns <= s2;
+            else ns <= s7;
+    endcase
 end
 
-////////////////// Output ////////////////////
-always@* begin 
-case(s) 
-	s0:begin ETL=g;
-		WTL=g;
-		NLTL=r;
-		ELTL=r;
-		counter_reset=0;
-		end
-	s1:begin ETL=g;
-		WTL=r;
-		NLTL=g;
-		ELTL=r;
-		//counter reset output logic
-		counter_reset=0;
-		end
-	s2:begin ETL=r;
-		WTL=r;
-		NLTL=r;
-		ELTL=g;
-		//counter reset output logic
-		counter_reset=0;
-		end
-	s3:begin ETL=g;
-		WTL=y;
-		NLTL=r;
-		ELTL=r;
-		counter_reset=1;
-		end
-	s4:begin ETL=g;
-		WTL=r;
-		NLTL=y;
-		ELTL=r;
-		counter_reset=1;
-		end
-	s5:begin ETL=y;
-		WTL=r;
-		NLTL=y;
-		ELTL=r;
-		counter_reset=1;
-		end
-	s6:begin ETL=r;
-		WTL=r;
-		NLTL=r;
-		ELTL=y;
-		counter_reset=1;
-		end
-	s7:begin ETL=y;
-		WTL=y;
-		NLTL=r;
-		ELTL=r;
-		counter_reset=1;
-		end
-endcase
+// Output logic
+always @* begin
+    case (s)
+        s0: begin
+            WTL = g;
+				ELTL = r;
+				NLTL = r;
+				ETL = g;
+            
+            counter_reset = 0;
+        end
+        s1: begin
+            WTL = r;
+				ELTL = r;
+				NLTL = g;
+				ETL = g;       
+            
+            counter_reset = 0;
+        end
+        s2: begin
+            WTL = r;
+				ELTL = g;
+				NLTL = r;
+				ETL = r;
+				
+            counter_reset = 0;
+        end
+        s3: begin
+            WTL = y;
+				ELTL = r;
+				NLTL = r;
+				ETL = g;
+
+            counter_reset = 1;
+        end
+        s4: begin
+            WTL = r;
+				ELTL = r;
+				NLTL = y;
+				ETL = g;
+				
+            counter_reset = 1;
+        end
+        s5: begin
+            WTL = r;
+				ELTL = r;
+				NLTL = y;
+				ETL = y;
+				
+            counter_reset = 1;
+        end
+        s6: begin
+            WTL = r;
+				ELTL = y;
+				NLTL = r;
+				ETL = r;
+
+            counter_reset = 1;
+        end
+        s7: begin
+            WTL = y;
+				ELTL = r;
+				NLTL = r;
+				ETL = y;
+				
+            counter_reset = 1;
+        end
+    endcase
 end
+
+
 
 ////////////////// State Register ////////////////////
 always@(posedge KEY[0]) begin
@@ -151,21 +171,3 @@ module NumDisplay(A,OUT0);
 	
 	assign OUT0 = TCMag[A];
 endmodule
-
-// Ask about how counter is working
-// ask about how state register plays into that
-// figure out counter reset output logic (probably pretty much what u have in state diagram
-
-
-
-
-
-
-
-
-
-
-
-
-
-
