@@ -1,3 +1,22 @@
+module Lab8(SW,KEY,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7,LEDG,CLOCK_50);
+input [17:0] SW;
+input [3:0] KEY;
+input CLOCK_50;
+output [6:0] HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7;
+output [8:0] LEDG;
+wire [36:0] clock;
+wire [10:0] total;
+Clock_Div CD(CLOCK_50,clock);
+
+
+FourFuncCalc Calc(clock[22],SW[17]&~KEY[0],SW[17]&~KEY[3],~SW[17]&~KEY[3],~SW[17]&~KEY[2],~SW[17]&~KEY[1],~SW[17]&~KEY[0],SW[10:0],total,LEDG[0]);
+Binary_to_7SEG Result1(total,1,HEX3,HEX2,HEX1,HEX0);
+Binary_to_7SEG Number1(SW[10:0],0,HEX7,HEX6,HEX5,HEX4);
+
+endmodule
+
+
+
 // W-Bit binary number to 4-Digit 7-Segment Display
 // Binary to 7SEG
 module Binary_to_7SEG
@@ -132,7 +151,7 @@ module BoothMul
 	wire PSgn = R[W-1] ^ ovf;					// Corrected P Sign on Adder/Subtractor overflow
 
 // Datapath Controller
-	reg [2:0] State, State_Next;
+	reg [3:0] State, State_Next;
 	localparam Init		= 3'd0;
 	localparam Load		= 3'd1;
 	localparam Check	= 3'd2;
@@ -141,6 +160,7 @@ module BoothMul
 	localparam Next		= 3'd5;
 	localparam More		= 3'd6;
 	localparam Done		= 3'd7;
+	localparam Multiply = 8;
 
  // Controller State Transitions
 	always @*
@@ -165,6 +185,8 @@ module BoothMul
 			Add: State_Next <= Next;
 
 			Sub: State_Next <= Next;
+			
+			Multiply: State_Next <= Next;
 
 			Next: State_Next <= More;
 
@@ -517,7 +539,11 @@ module FourFuncCalc
 					X_Next<=XDone;
 				else 
 					X_Next<=XCheck;
-		XDone:begin X_Next<=XResult;end
+		XDone:begin
+		if(PM[W]^PM[W+1])
+			X_Next <= XOvf; // go to overflow
+		else
+			X_Next <= XResult;end // display result
 		XNext:begin X_Next<=XMore;end
 		XAdd:begin X_Next<=XNext;end
 		XSub:begin X_Next<=XNext;end
@@ -661,21 +687,4 @@ module TC2SM
 	assign SM = {TC[width-1], Magnitude[width-2:0]};// Prepend sign
   assign Overflow = TC[width-1] & ~TC[width-2:0]; // Most negative TC numbe
                                                   // Alternatively, Overflow = Magnitude[width-1]
-endmodule
-
-module Lab8(SW,KEY,HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7,LEDG,CLOCK_50);
-input [17:0] SW;
-input [3:0] KEY;
-input CLOCK_50;
-output [6:0] HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7;
-output [8:0] LEDG;
-wire [36:0] clock;
-wire [10:0] total;
-Clock_Div CD(CLOCK_50,clock);
-
-
-FourFuncCalc Calc(clock[22],SW[17]&~KEY[0],SW[17]&~KEY[3],~SW[17]&~KEY[3],~SW[17]&~KEY[2],~SW[17]&~KEY[1],~SW[17]&~KEY[0],SW[10:0],total,LEDG[0]);
-Binary_to_7SEG Result1(total,1,HEX3,HEX2,HEX1,HEX0);
-Binary_to_7SEG Number1(SW[10:0],0,HEX7,HEX6,HEX5,HEX4);
-
 endmodule
